@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Card Cheat Sheet</title>
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one-line quarter note, a switchable best-card view, the compact editable grid, fine print folded away. */
+:root{
+  --bg:#F2F5F7; --surface:#FFFFFF; --ink:#13202A; --muted:#566774; --line:#DAE2E8;
+  --accent:#0B6E6A; --accent-ink:#FFFFFF; --accent-soft:#DDF1EF; --warn:#8A5200; --warn-soft:#FBEFD9;
+  --font-display:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-body:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1418; --surface:#141E24; --ink:#E5EEF2; --muted:#92A4B0; --line:#25343D;
+    --accent:#4FC4BD; --accent-ink:#06201E; --accent-soft:#123B3A; --warn:#F0B45A; --warn-soft:#3A2C12; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1418; --surface:#141E24; --ink:#E5EEF2; --muted:#92A4B0; --line:#25343D;
+  --accent:#4FC4BD; --accent-ink:#06201E; --accent-soft:#123B3A; --warn:#F0B45A; --warn-soft:#3A2C12; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--font-body); font-size:14.5px; line-height:1.4;
+  padding-block:24px 48px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h3{font-family:var(--font-display);margin:0;text-wrap:balance;letter-spacing:-0.01em}
+h1{font-size:26px;line-height:1.1}
+h3{font-size:15px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,summary:focus-visible,[contenteditable]:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.btn{font-size:13px;padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.status{font-size:12.5px;color:var(--muted);min-width:64px;text-align:right}
+.status.err{color:var(--warn)}
+.spend{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.spend input,.cpp{border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font-family:var(--font-data);font-size:13px;padding:5px 7px;width:70px}
+
+.banner{background:var(--warn-soft);border-radius:8px;padding:8px 14px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-size:14px}
+.banner b{color:var(--warn);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+.banner .ed{padding:0;min-height:0;flex:1 1 280px}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.tabs{display:flex;gap:4px;margin-bottom:12px}
+.tab{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.tab[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+.picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.pick{background:var(--bg);border-radius:8px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pick .cat{font-size:11.5px;color:var(--muted)}
+.pick .who{font-family:var(--font-display);font-weight:700;font-size:16px;line-height:1.2;overflow-wrap:anywhere}
+.pick .how{font-family:var(--font-data);font-size:12.5px;color:var(--accent);overflow-wrap:anywhere}
+.pick.none .who{color:var(--muted);font-weight:500;font-size:13.5px}
+.bycard{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.bc{background:var(--bg);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.bc h3{overflow-wrap:anywhere}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:500}
+.chip.q{background:var(--warn-soft);color:var(--warn)}
+.none{color:var(--muted);font-size:13px}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:940px;font-size:13.5px}
+th,td{padding:0;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top;text-align:left;background:var(--surface)}
+th:last-child,td:last-child{border-right:0}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+thead th{position:relative;background:var(--bg)}
+.ed{display:block;padding:8px 10px;min-height:34px;white-space:pre-wrap;overflow-wrap:anywhere;outline:none;cursor:text}
+.ed:focus{background:var(--accent-soft)}
+.colhead .ed{font-weight:500;font-size:12.5px;padding-right:26px}
+.rowhead{position:sticky;left:0;z-index:1;min-width:170px;max-width:200px}
+thead th:first-child{position:sticky;left:0;z-index:2;min-width:170px}
+.rowhead .ed{font-weight:500;padding-right:26px;padding-bottom:2px;min-height:0}
+.rowtools,.coltools{display:flex;align-items:center;gap:4px;padding:0 8px 6px;flex-wrap:wrap}
+.rowtools small{color:var(--muted);font-size:11px;margin-left:2px}
+.rowtools .cpp{width:50px;padding:2px 5px;font-size:12px}
+.mv{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:6px;font-size:10px;line-height:1;padding:4px 6px}
+.mv:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.mv:disabled{opacity:.3;cursor:default}
+td.cell{position:relative;min-width:128px}
+td.cell.best{background:var(--accent-soft)}
+td.cell.best .ed{color:var(--accent);font-weight:500}
+td.cell .usd{display:block;padding:0 10px 7px;font-family:var(--font-data);font-size:11.5px;color:var(--muted);margin-top:-3px;min-height:0}
+td.cell .usd:empty{display:none}
+td.cell.best .usd{color:var(--accent)}
+.star{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:6px;border:0;background:transparent;color:var(--muted);font-size:14px;line-height:1;padding:0;opacity:0}
+td.cell:hover .star,td.cell:focus-within .star,.star[aria-pressed="true"]{opacity:1}
+.star[aria-pressed="true"]{color:var(--accent)}
+@media (hover:none){.star{opacity:.55}.star[aria-pressed="true"]{opacity:1}.rm{opacity:.55}}
+.rm{position:absolute;top:6px;right:4px;border:0;background:transparent;color:var(--muted);font-size:12px;border-radius:6px;padding:2px 5px;opacity:0}
+th:hover .rm,th:focus-within .rm,.rm[data-armed="1"]{opacity:1}
+.rm[data-armed="1"]{color:var(--warn);background:var(--warn-soft)}
+:root{--g:#1B7F3B;--g-soft:#DFF3E4;--o:#A85A00;--o-soft:#FDE6CC}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--g:#6FD99A;--g-soft:#12351F;--o:#F2A04A;--o-soft:#3B2410}}
+:root[data-theme="dark"]{--g:#6FD99A;--g-soft:#12351F;--o:#F2A04A;--o-soft:#3B2410}
+td.cell.t1{background:var(--g-soft)}
+td.cell.t1 .ed,td.cell.t1 .usd{color:var(--g);font-weight:500}
+td.cell.t2{background:var(--o-soft)}
+td.cell.t2 .ed,td.cell.t2 .usd{color:var(--o);font-weight:500}
+.autotag{display:block;border:0;background:transparent;padding:0 10px 4px;font:inherit;font-size:11px;color:var(--accent);text-align:left;cursor:default}
+button.autotag{cursor:pointer;text-decoration:underline dotted}
+.autotag.warn{color:var(--warn)}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px 16px}
+.modal .sheet{margin-top:8vh;width:min(420px,100%);max-height:80vh;display:flex;flex-direction:column;gap:10px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px}
+.modal h2{margin:0;font-size:16px}
+.modal input{border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:14px;padding:8px 10px}
+.pk-list{overflow-y:auto;display:flex;flex-direction:column;gap:2px;min-height:60px}
+.pk-item{text-align:left;border:0;background:transparent;color:var(--ink);font:inherit;font-size:14px;padding:8px 10px;border-radius:8px;cursor:pointer}
+.pk-item:hover,.pk-item:focus-visible{background:var(--accent-soft);color:var(--accent)}
+.pk-item.custom{font-weight:600}
+.pk-note{margin:0;font-size:12px;color:var(--muted)}
+.cpick{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.citi{margin-bottom:12px;font-size:13px;line-height:1.45;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:8px 12px}
+.citi b{color:var(--fg)}
+.sortbtn{border:0;background:transparent;color:var(--muted);font:inherit;font-size:11px;cursor:pointer;padding:2px 4px;margin-left:4px;border-radius:6px}
+.sortbtn:hover,.sortbtn:focus-visible{color:var(--accent)}
+.sortbtn[aria-pressed="true"]{color:var(--accent);background:var(--accent-soft);font-weight:600}
+.info{border:1px solid var(--muted);background:transparent;color:var(--muted);width:17px;height:17px;border-radius:50%;font:italic 600 11px/1 serif;cursor:pointer;padding:0;margin-left:6px;vertical-align:middle}
+.info:hover,.info:focus-visible{color:var(--accent);border-color:var(--accent)}
+.pop{position:fixed;z-index:50;max-width:min(320px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--muted);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.45;white-space:pre-line;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.pop b{display:block;margin-bottom:6px}
+.hiddenbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.hiddenbar .chip{border:0;cursor:pointer;font:inherit;font-size:12px}
+.empty{padding:24px 16px;text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:10px;align-items:center}
+
+details.fine{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+details.fine summary{cursor:pointer;font-weight:500;font-size:14px}
+.fine .items{display:flex;flex-direction:column;margin-top:8px}
+.fine .item{display:grid;grid-template-columns:170px minmax(0,1fr);gap:10px;border-top:1px solid var(--line);padding:6px 0;font-size:13px}
+.fine .item b{font-weight:500}
+.fine .item .ed{padding:0;min-height:0;color:var(--muted)}
+@media (max-width:560px){h1{font-size:23px}.fine .item{grid-template-columns:1fr;gap:2px}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Card Cheat Sheet</h1>
+    <div class="tools">
+      <label class="spend">Spend $<input id="spend" type="number" min="1" step="1" value="100" inputmode="decimal" aria-label="Spend amount in dollars"></label>
+      <span class="status" id="status" role="status"></span>
+      <button class="btn" id="add-card" type="button" hidden>Add card</button>
+      <button class="btn" id="add-cat" type="button" hidden>Add category</button>
+      <button class="btn" id="dl" type="button" hidden>CSV</button>
+      <button class="btn" id="backup" type="button">Backup</button>
+      <button class="btn" id="restore" type="button">Restore</button>
+      <input type="file" id="restore-file" accept="application/json,.json" hidden>
+    </div>
+  </header>
+
+  <div class="banner" id="banner" hidden></div>
+
+  <div id="views"></div>
+
+  <section class="panel">
+    <div id="grid"><div class="empty">Loading your sheet…</div></div>
+  </section>
+
+  <div id="fine-wrap"></div>
+</div>
+
+<script>
+(function(){
+  var KEY='card-cheat-sheet-v1', mem=null;
+  var SEED={"best": {"c_dining": "r_disc", "c_gas": "r_bce", "c_indian": "r_bce", "c_online": "r_bce", "c_other": "r_vx", "c_travel": "r_csr", "c_wc": "r_vx"}, "cells": {"r_apple__c_dining": "2% (Apple Pay)", "r_apple__c_gas": "3% Exxon/Mobil, else 2%", "r_apple__c_indian": "2% (Apple Pay)", "r_apple__c_online": "2% (Apple Pay)", "r_apple__c_other": "2% (Apple Pay)", "r_apple__c_travel": "3% Booking/Hertz, else 2%", "r_apple__c_wc": "2% (Apple Pay)", "r_bce__c_dining": "", "r_bce__c_gas": "3% (cap $6k/yr)", "r_bce__c_indian": "3% at U.S. supermarkets, on up to $6,000 per year, then 1%\n(only if the store is coded as a supermarket)", "r_bce__c_online": "3% at U.S. online retail, on up to $6,000 per year, then 1%\nTravel, streaming, tickets and food delivery excluded", "r_bce__c_other": "", "r_bce__c_travel": "", "r_bce__c_wc": "Walmart: 1% in store, 3% on Walmart.com only if coded as online retail\nCostco: not accepted", "r_ccc__c_dining": "5% if top category (cap $500)", "r_ccc__c_gas": "5% if top category (cap $500)", "r_ccc__c_indian": "5% if top category (cap $500)", "r_ccc__c_online": "", "r_ccc__c_other": "", "r_ccc__c_travel": "5% if top category (cap $500)", "r_ccc__c_wc": "", "r_cfu__c_dining": "3%", "r_cfu__c_gas": "1.5%", "r_cfu__c_indian": "1.5%", "r_cfu__c_online": "1.5%", "r_cfu__c_other": "1.5%", "r_cfu__c_travel": "5% (Chase Travel)", "r_cfu__c_wc": "1.5%", "r_csr__c_dining": "3x", "r_csr__c_gas": "", "r_csr__c_indian": "", "r_csr__c_online": "", "r_csr__c_other": "", "r_csr__c_travel": "8x Chase Travel, 4x direct", "r_csr__c_wc": "", "r_disc__c_dining": "5% (Q4, activate)", "r_disc__c_gas": "", "r_disc__c_indian": "", "r_disc__c_online": "", "r_disc__c_other": "", "r_disc__c_travel": "", "r_disc__c_wc": "", "r_vx__c_dining": "2X", "r_vx__c_gas": "2X", "r_vx__c_indian": "2X", "r_vx__c_online": "2X", "r_vx__c_other": "2X", "r_vx__c_travel": "10X hotels/cars, 5X flights", "r_vx__c_wc": "2X", "r_zolve__c_dining": "", "r_zolve__c_gas": "", "r_zolve__c_indian": "", "r_zolve__c_online": "", "r_zolve__c_other": "", "r_zolve__c_travel": "", "r_zolve__c_wc": ""}, "cols": [{"id": "c_dining", "name": "Dining"}, {"id": "c_indian", "info": "Amex 3% applies only to U.S. supermarkets. Amex says superstores, convenience stores, warehouse clubs and meal-kit delivery services are not supermarkets. Merchants are coded by what they mainly sell, so a small Indian grocery usually counts only if it is coded as a supermarket. Check one purchase in your Amex app. Citi Custom Cash 5% groceries has similar exclusions.", "name": "Indian grocery store"}, {"id": "c_wc", "info": "Walmart is a superstore, so it does not earn Amex 3% supermarket cash back or Citi 5% groceries. Walmart.com may be coded as online retail (Amex 3% online), which I could not confirm.\n\nCostco warehouses accept Visa only, so Mastercard, Discover and Amex cards do not work in store.", "name": "Walmart / Costco"}, {"id": "c_gas", "name": "Gas"}, {"id": "c_travel", "name": "Travel portal"}, {"id": "c_online", "info": "Amex Blue Cash Everyday 3% on U.S. online retail, up to $6,000 a year, then 1%.\n\nCounts: online purchases from U.S. retailers whose merchant code is retail.\n\nDoes not count (Amex terms): restaurants, supermarkets, gas stations, auto dealers, and purchases of travel, entertainment or other services. So no flights, hotels, streaming, tickets, food delivery or grocery delivery.\n\nMerchants are coded by what they mainly sell. A purchase earns no bonus if its code is not in the category. Every other card here earns its normal rate online.", "name": "Online Shopping"}, {"id": "c_other", "name": "Everything Else"}], "fine": "Rates checked on each issuer's site on Nov 4, 2026. Costco warehouses take Visa only, so Apple Card, Zolve, Custom Cash, Discover and Amex don't work there. Dollar amounts show the top rate and ignore caps.", "notes": {"r_apple": "3% also at Apple, Nike, Uber and Uber Eats. 1% with the titanium card or card number.", "r_bce": "3% categories cap at $6,000 per year each, then 1%. 2.7% foreign fee. Walmart likely isn't a supermarket here, so check your card terms.", "r_ccc": "5% on your top eligible category each cycle, first $500 only. Superstores and warehouse clubs are excluded from groceries.", "r_cfu": "3% on drugstores too. 100 points = $1.", "r_csr": "$795 annual fee. 5x on Lyft through 9/30/2027.", "r_disc": "5% needs activation each quarter and is capped at $1,500 combined. Discover's own pages didn't show the Q4 list, so confirm it in the app.", "r_vx": "$395 annual fee. No foreign transaction fee.", "r_zolve": "Classic card, 1 point per $1. Signature and Black pay more on 3 or 5 brands you choose."}, "quarter": {"card": "r_disc", "text": "Q4 (Oct 1 to Dec 31): Discover pays 5% on restaurants, entertainment and utilities. Activate first."}, "rows": [{"cpp": 1, "hidden": true, "id": "r_zolve", "name": "Zolve Credit Card"}, {"hidden": true, "id": "r_apple", "name": "Apple Card"}, {"id": "r_cfu", "name": "Chase Freedom Unlimited"}, {"cpp": 1, "id": "r_csr", "name": "Chase Sapphire Reserve"}, {"id": "r_disc", "name": "Discover it"}, {"cpp": 1, "id": "r_vx", "name": "Capital One Venture X"}, {"id": "r_bce", "name": "Amex Blue Cash Everyday"}, {"id": "r_ccc", "name": "Citi Custom Cash", "topcat": true}], "spend": 100};
+  function load(){
+    try{ var s=localStorage.getItem(KEY); if(s) return JSON.parse(s); }catch(e){}
+    return mem ? JSON.parse(mem) : JSON.parse(JSON.stringify(SEED));
+  }
+  function save(d){ var s=JSON.stringify(d); mem=s; try{ localStorage.setItem(KEY,s); }catch(e){} }
+  function download(name, text, type){
+    var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:type||'text/plain'})); a.download=name;
+    document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },500);
+  }
+  var doc={
+    onSnapshot:function(ok){ setTimeout(function(){ ok({exists:true,data:function(){return load();}}); },0); },
+    set:function(d){ save(d); return Promise.resolve(); }
+  };
+  window.claude={ use:function(n){
+    if(n==='db') return Promise.resolve({doc:function(){return doc;}});
+    if(n==='downloads') return Promise.resolve({save:function(o){ download(o.filename,o.data,'text/csv'); return Promise.resolve({status:'saved'}); }});
+    return Promise.resolve(null);
+  }};
+  var bk=document.getElementById('backup'), rs=document.getElementById('restore'), fi=document.getElementById('restore-file');
+  bk.addEventListener('click',function(){ download('card-cheat-sheet-backup.json', JSON.stringify(load(),null,2), 'application/json'); });
+  rs.addEventListener('click',function(){ fi.click(); });
+  fi.addEventListener('change',function(){
+    var f=fi.files[0]; if(!f) return;
+    var r=new FileReader();
+    r.onload=function(){ try{ var d=JSON.parse(r.result); if(!d||!Array.isArray(d.rows)||!Array.isArray(d.cols)) throw 0; save(d); location.reload(); }catch(e){ alert('That file is not a card sheet backup.'); } };
+    r.readAsText(f);
+  });
+})();
+</script>
+<script>
+(function(){
+  var DOC_PATH = 'wallet/main';
+  var ref = null, downloads = null;
+  var data = null, view = 'cat', fineOpen = false;
+  var dirty = false, queued = false, chain = Promise.resolve();
+  var pendingRender = false, loaded = false;
+  var statusEl = document.getElementById('status');
+
+  function $(id){ return document.getElementById(id); }
+  function uid(p){ return p + Date.now().toString(36) + Math.floor(Math.random()*1296).toString(36); }
+  function key(r,c){ return r + '__' + c; }
+  function setStatus(t, err){ statusEl.textContent = t; statusEl.className = 'status' + (err ? ' err' : ''); }
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function obj(x){ return x && typeof x === 'object' && !Array.isArray(x) ? x : {}; }
+  function norm(d){
+    d = d || {};
+    return {
+      cols: Array.isArray(d.cols) ? d.cols : [], rows: Array.isArray(d.rows) ? d.rows : [],
+      cells: obj(d.cells), best: obj(d.best), notes: obj(d.notes),
+      spend: typeof d.spend === 'number' && d.spend > 0 ? d.spend : 100,
+      quarter: d.quarter && typeof d.quarter === 'object' ? d.quarter : null,
+      fine: typeof d.fine === 'string' ? d.fine : ''
+    };
+  }
+  function calcCols(){ return data.cols.filter(function(c){ return c.calc !== false; }); }
+  function vis(){ return data.rows.filter(function(r){ return !r.hidden; }); }
+
+  // Dollar value for a cell: the highest rate in its text, for the chosen spend.
+  function parseRates(text){
+    var out = [], re = /(\d+(?:\.\d+)?)\s*(%|x(?![a-z])|points?\s+per)/gi, m;
+    while ((m = re.exec(text || ''))){ out.push({ v: parseFloat(m[1]), unit: m[2] === '%' ? '%' : 'x' }); }
+    return out;
+  }
+  function money(x){ return x % 1 === 0 ? '$' + x : '$' + x.toFixed(2); }
+  function usd(text, row, long){
+    var rates = parseRates(text);
+    if (!rates.length) return '';
+    var cpp = row && typeof row.cpp === 'number' && row.cpp > 0 ? row.cpp : 0;
+    var pcts = [], needs = false;
+    rates.forEach(function(r){
+      if (r.unit === '%') pcts.push(r.v); else if (cpp) pcts.push(r.v * cpp); else needs = true;
+    });
+    if (!pcts.length) return needs ? 'set point value' : '';
+    var max = Math.max.apply(null, pcts), seen = {};
+    pcts.forEach(function(p){ seen[Math.round(p*1000)] = 1; });
+    var s = (Object.keys(seen).length > 1 ? 'up to ' : '') + money(Math.round(data.spend * max) / 100);
+    return long ? s + ' per ' + money(data.spend) : s;
+  }
+  // Best rate in a cell as a percent of spend (-1 when there is no rate).
+  function rateOf(text, row){
+    var cpp = row && typeof row.cpp === 'number' && row.cpp > 0 ? row.cpp : 0, best = -1;
+    parseRates(text).forEach(function(r){
+      var p = r.unit === '%' ? r.v : (cpp ? r.v * cpp : -1);
+      if (p > best) best = p;
+    });
+    return best;
+  }
+  // Cards flagged topcat (Citi Custom Cash) pay 5% on one auto-picked category.
+  // Find the category where that 5% beats the next-best card by the most.
+  function citiPick(){
+    var row = vis().filter(function(r){ return r.topcat; })[0];
+    if (!row) return null;
+    var found = [], top = 0;
+    calcCols().forEach(function(c){
+      var mine = rateOf(data.cells[key(row.id, c.id)], row);
+      if (mine <= 0) return;
+      var other = 0;
+      vis().forEach(function(r){ if (r.id !== row.id) other = Math.max(other, rateOf(data.cells[key(r.id, c.id)], r)); });
+      var gain = mine - other;
+      if (gain > top + 0.001){ top = gain; found = [c]; } else if (gain > 0 && Math.abs(gain - top) < 0.001){ found.push(c); }
+    });
+    return { row: row, cols: found, gain: top };
+  }
+  // Per column: tier 1 = highest rate (green), tier 2 = next highest (orange).
+  // A top-category card (Citi) only counts where it is the recommended pick.
+  function tiers(colId, cp){
+    var vals = [];
+    vis().forEach(function(r){
+      var v = rateOf(data.cells[key(r.id, colId)], r);
+      if (r.topcat && !(cp && cp.row.id === r.id && cp.cols.some(function(c){ return c.id === colId; }))) v = -1;
+      vals.push({ id: r.id, v: v });
+    });
+    var distinct = [];
+    vals.forEach(function(x){ if (x.v > 0 && distinct.indexOf(x.v) < 0) distinct.push(x.v); });
+    distinct.sort(function(a, b){ return b - a; });
+    var out = {};
+    vals.forEach(function(x){ if (x.v > 0 && x.v === distinct[0]) out[x.id] = 1; else if (x.v > 0 && x.v === distinct[1]) out[x.id] = 2; });
+    return out;
+  }
+  var sortCol = null;
+  function sortedRows(){
+    var rows = vis().map(function(r, i){ return { r: r, i: i }; });
+    if (!sortCol) return rows.map(function(x){ return x.r; });
+    rows.forEach(function(x){ x.v = rateOf(data.cells[key(x.r.id, sortCol)], x.r); });
+    rows.sort(function(a, b){ return (b.v - a.v) || (a.i - b.i); });
+    return rows.map(function(x){ return x.r; });
+  }
+  function rowUsesPoints(r){
+    if (typeof r.cpp === 'number') return true;
+    return data.cols.some(function(c){ return parseRates(data.cells[key(r.id, c.id)]).some(function(x){ return x.unit === 'x'; }); });
+  }
+
+  function editing(){
+    var a = document.activeElement;
+    return !!(a && a.classList && a.classList.contains('ed') && document.querySelector('.wrap').contains(a));
+  }
+
+  function renderBanner(){
+    var b = $('banner'), q = null;
+    if (!q || !q.text){ b.hidden = true; return; }
+    b.hidden = false;
+    b.innerHTML = '<b>This quarter</b><span class="ed" contenteditable="plaintext-only" spellcheck="false" data-kind="qtext">' + esc(q.text) + '</span>';
+  }
+
+  function renderViews(){
+    var cp = null, box = $('views');
+    if (cp && cp.cols.length){
+      box.innerHTML = '<div class="citi"><b>' + esc(cp.row.name) + ':</b> put its 5% on <b>' + cp.cols.map(function(c){ return esc(c.name); }).join(' or ') + '</b>, where it beats your next-best card by ' + (Math.round(cp.gain * 10) / 10) + ' points. Citi applies 5% to whichever eligible category you spend most in each cycle, so make that your biggest.</div>';
+    } else box.innerHTML = '';
+  }
+  function renderViewsOld(){
+    var cols = calcCols(), box = $('views');
+    var tabs = document.querySelectorAll('#tabs .tab');
+    for (var i = 0; i < tabs.length; i++) tabs[i].setAttribute('aria-pressed', tabs[i].getAttribute('data-view') === view ? 'true' : 'false');
+    if (!cols.length || !vis().length){ box.innerHTML = '<div class="none">Add a card and a category to see the best picks.</div>'; return; }
+    if (view === 'cat'){
+      box.innerHTML = '<div class="picks">' + cols.map(function(c){
+        var row = vis().filter(function(r){ return r.id === data.best[c.id]; })[0];
+        if (!row) return '<div class="pick none"><span class="cat">' + esc(c.name) + '</span><span class="who">No pick yet</span></div>';
+        var txt = data.cells[key(row.id, c.id)] || '', u = usd(txt, row, true);
+        return '<div class="pick"><span class="cat">' + esc(c.name) + '</span><span class="who">' + esc(row.name) + '</span>' +
+          '<span class="how">' + esc(txt.split('\n')[0]) + (u ? ' · ' + esc(u) : '') + '</span></div>';
+      }).join('') + '</div>';
+      var cp = citiPick();
+      if (cp && cp.cols.length) box.innerHTML += '<div class="citi"><b>' + esc(cp.row.name) + ':</b> put its 5% on <b>' + cp.cols.map(function(c){ return esc(c.name); }).join(' or ') + '</b>, where it beats your next-best card by ' + (Math.round(cp.gain * 10) / 10) + ' points. Citi applies 5% to whichever eligible category you spend most in each cycle, so make that your biggest.</div>';
+    } else {
+      box.innerHTML = '<div class="bycard">' + vis().map(function(r){
+        var mine = cols.filter(function(c){ return data.best[c.id] === r.id; });
+        var inSeason = data.quarter && data.quarter.card === r.id;
+        var chips = (inSeason ? '<span class="chip q">This quarter</span>' : '') + mine.map(function(c){
+          var u = usd(data.cells[key(r.id, c.id)], r);
+          return '<span class="chip">' + esc(c.name) + (u ? ' · ' + esc(u) : '') + '</span>';
+        }).join('');
+        return '<article class="bc"><h3>' + esc(r.name) + '</h3>' + (chips ? '<div class="chips">' + chips + '</div>' : '<div class="none">Backup</div>') + '</article>';
+      }).join('') + '</div>';
+    }
+  }
+
+  function renderGrid(){
+    var g = $('grid');
+    if (!(data.cols.length || data.rows.length)){
+      g.innerHTML = '<div class="empty"><span>Nothing in this sheet yet.</span><button class="btn primary" id="blank" type="button">Start with a blank grid</button></div>';
+      $('blank').addEventListener('click', function(){
+        data.cols = [{id:uid('c'),name:'Dining'},{id:uid('c'),name:'Groceries'},{id:uid('c'),name:'Everything else'}];
+        data.rows = [{id:uid('r'),name:'My first card'}]; data.cells = {}; data.best = {};
+        changed(true);
+      });
+      return;
+    }
+    if (sortCol && !data.cols.some(function(c){ return c.id === sortCol; })) sortCol = null;
+    var rowsV = sortedRows(), nc = data.cols.length, nr = rowsV.length, cp = citiPick(), tierCache = {};
+    var h = '<div class="tablewrap"><table><thead><tr><th></th>';
+    data.cols.forEach(function(c, i){
+      h += '<th class="colhead"><span class="ed" contenteditable="plaintext-only" spellcheck="false" data-kind="col" data-col="' + c.id + '">' + esc(c.name) + '</span>' + '<button class="sortbtn" type="button" data-sort="' + c.id + '" aria-pressed="' + (sortCol === c.id) + '" title="Sort best to worst" aria-label="Sort ' + esc(c.name) + ' best to worst">' + (sortCol === c.id ? '↓ best' : '⇅') + '</button>' + (c.info ? '<button class="info" type="button" data-info="' + c.id + '" aria-label="What counts as ' + esc(c.name) + '">i</button>' : '') +
+           '<div class="coltools"><button class="mv" type="button" data-move="col" data-dir="-1" data-id="' + c.id + '"' + (i === 0 ? ' disabled' : '') + ' aria-label="Move ' + esc(c.name) + ' left">◀</button>' +
+           '<button class="mv" type="button" data-move="col" data-dir="1" data-id="' + c.id + '"' + (i === nc-1 ? ' disabled' : '') + ' aria-label="Move ' + esc(c.name) + ' right">▶</button></div>' +
+           '<button class="rm" type="button" data-rm="col" data-id="' + c.id + '" aria-label="Remove ' + esc(c.name) + '">×</button></th>';
+    });
+    h += '</tr></thead><tbody>';
+    rowsV.forEach(function(r, i){
+      var pts = rowUsesPoints(r);
+      h += '<tr><th class="rowhead"><span class="ed" contenteditable="plaintext-only" spellcheck="false" data-kind="row" data-row="' + r.id + '">' + esc(r.name) + '</span>' + autoTag(r) +
+           '<div class="rowtools"><button class="mv" type="button" data-move="row" data-dir="-1" data-id="' + r.id + '"' + (i === 0 || sortCol ? ' disabled' : '') + ' aria-label="Move ' + esc(r.name) + ' up">▲</button>' +
+           '<button class="mv" type="button" data-move="row" data-dir="1" data-id="' + r.id + '"' + (i === nr-1 || sortCol ? ' disabled' : '') + ' aria-label="Move ' + esc(r.name) + ' down">▼</button>' +
+           '<button class="mv" type="button" data-hide="' + r.id + '" aria-label="Hide ' + esc(r.name) + '">Hide</button>' +
+           (pts ? '<small>¢/pt</small><input class="cpp" type="number" min="0" step="0.05" inputmode="decimal" data-cpp="' + r.id + '" value="' + (typeof r.cpp === 'number' ? r.cpp : '') + '" aria-label="Point value in cents for ' + esc(r.name) + '">' : '') +
+           '</div><button class="rm" type="button" data-rm="row" data-id="' + r.id + '" aria-label="Remove ' + esc(r.name) + '">×</button></th>';
+      data.cols.forEach(function(c){
+        var txt = data.cells[key(r.id, c.id)];
+        if (c.calc === false){
+          h += '<td class="cell"><span class="ed" contenteditable="plaintext-only" spellcheck="false" data-kind="cell" data-row="' + r.id + '" data-col="' + c.id + '">' + esc(txt) + '</span></td>';
+          return;
+        }
+        var isBest = data.best[c.id] === r.id;
+        var tier = (tierCache[c.id] || (tierCache[c.id] = tiers(c.id, cp)))[r.id] || 0;
+        var isCiti = cp && cp.row.id === r.id && cp.cols.some(function(x){ return x.id === c.id; });
+        h += '<td class="cell' + (tier ? ' t' + tier : '') + (isCiti ? ' cpick' : '') + '" data-row="' + r.id + '" data-col="' + c.id + '"><span class="ed" contenteditable="plaintext-only" spellcheck="false" data-kind="cell" data-row="' + r.id + '" data-col="' + c.id + '">' + esc(txt) + '</span>' +
+             '<span class="usd">' + esc(usd(txt, r)) + '</span>' +
+             '<button class="star" type="button" aria-pressed="' + isBest + '" data-star="1" data-row="' + r.id + '" data-col="' + c.id + '" aria-label="Best card for ' + esc(c.name) + '">' + (isBest ? '★' : '☆') + '</button></td>';
+      });
+      h += '</tr>';
+    });
+    var hid = data.rows.filter(function(r){ return r.hidden; });
+    g.innerHTML = h + '</tbody></table></div>' + (hid.length ? '<div class="hiddenbar"><span>Hidden:</span>' + hid.map(function(r){ return '<button class="chip" type="button" data-show="' + r.id + '">' + esc(r.name) + ' · Show</button>'; }).join('') + '</div>' : '');
+  }
+
+  function renderFine(){
+    var any = data.rows.some(function(r){ return data.notes[r.id]; }) || data.fine;
+    $('fine-wrap').innerHTML = ''; return;
+    var h = '<details class="fine" id="fine"' + (fineOpen ? ' open' : '') + '><summary>Fine print</summary><div class="items">';
+    if (data.fine || any) h += '<div class="item"><b>All cards</b><span class="ed" contenteditable="plaintext-only" spellcheck="false" data-kind="gnote">' + esc(data.fine) + '</span></div>';
+    vis().forEach(function(r){
+      h += '<div class="item"><b>' + esc(r.name) + '</b><span class="ed" contenteditable="plaintext-only" spellcheck="false" data-kind="note" data-row="' + r.id + '">' + esc(data.notes[r.id]) + '</span></div>';
+    });
+    $('fine-wrap').innerHTML = h + '</div></details>';
+    $('fine').addEventListener('toggle', function(){ fineOpen = this.open; });
+  }
+
+  function refreshUsd(){
+    var tds = document.querySelectorAll('td.cell[data-row][data-col]');
+    for (var i = 0; i < tds.length; i++){
+      var rid = tds[i].getAttribute('data-row'), cid = tds[i].getAttribute('data-col');
+      var row = data.rows.filter(function(r){ return r.id === rid; })[0];
+      var el = tds[i].querySelector('.usd');
+      if (el) el.textContent = usd(data.cells[key(rid, cid)], row);
+    }
+  }
+
+  function render(){
+    if (!data) return;
+    $('spend').value = data.spend;
+    renderBanner(); renderViews(); renderGrid(); renderFine();
+    $('add-card').hidden = !ref; $('add-cat').hidden = !ref; $('dl').hidden = !downloads;
+  }
+
+  function scheduleSave(){
+    if (!ref){ setStatus('Saving is not available here', true); return; }
+    dirty = true;
+    if (queued) return;
+    queued = true;
+    setStatus('Saving…');
+    chain = chain.then(function(){
+      queued = false;
+      return ref.set(clone(data)).then(function(){
+        if (!queued){ dirty = false; setStatus('Saved'); }
+      }, function(e){
+        dirty = false;
+        setStatus(e && e.code === 'invalid_argument' ? 'View only. Ask the owner for edit access.' : 'Could not save. Try again.', true);
+      });
+    });
+  }
+  function changed(rerender){ if (rerender) render(); scheduleSave(); }
+
+  var wrap = document.querySelector('.wrap');
+  var startVal = null;
+  wrap.addEventListener('focusin', function(e){
+    var t = e.target;
+    if (t.classList && t.classList.contains('ed')) startVal = t.innerText;
+  });
+  wrap.addEventListener('focusout', function(e){
+    var t = e.target;
+    if (!data || !t.classList || !t.classList.contains('ed')) return;
+    var v = t.innerText.replace(/\n+$/,'');
+    var kind = t.getAttribute('data-kind');
+    if (v !== startVal){
+      if (kind === 'cell') data.cells[key(t.getAttribute('data-row'), t.getAttribute('data-col'))] = v;
+      else if (kind === 'row') data.rows.forEach(function(r){ if (r.id === t.getAttribute('data-row')) r.name = v || 'Untitled'; });
+      else if (kind === 'col') data.cols.forEach(function(c){ if (c.id === t.getAttribute('data-col')) c.name = v || 'Untitled'; });
+      else if (kind === 'qtext' && data.quarter) data.quarter.text = v;
+      else if (kind === 'note') data.notes[t.getAttribute('data-row')] = v;
+      else if (kind === 'gnote') data.fine = v;
+      renderViews(); refreshUsd();
+      scheduleSave();
+    }
+    setTimeout(function(){ if (pendingRender && !editing()){ pendingRender = false; render(); } }, 0);
+  });
+  wrap.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && e.target.classList && e.target.classList.contains('ed')) e.target.blur();
+  });
+
+  wrap.addEventListener('change', function(e){
+    var t = e.target;
+    if (!data) return;
+    if (t.id === 'spend'){
+      var s = parseFloat(t.value);
+      if (isFinite(s) && s > 0){ data.spend = s; renderViews(); refreshUsd(); scheduleSave(); } else t.value = data.spend;
+    } else if (t.getAttribute && t.getAttribute('data-cpp')){
+      var id = t.getAttribute('data-cpp'), v = parseFloat(t.value);
+      data.rows.forEach(function(r){
+        if (r.id !== id) return;
+        if (isFinite(v) && v > 0) r.cpp = v; else delete r.cpp;
+      });
+      renderViews(); refreshUsd(); scheduleSave();
+    }
+  });
+
+  function move(kind, id, dir){
+    var arr = kind === 'row' ? data.rows : data.cols;
+    var i = arr.map(function(x){ return x.id; }).indexOf(id), j = i + dir;
+    if (kind === 'row') while (j >= 0 && j < arr.length && arr[j].hidden) j += dir;
+    if (i < 0 || j < 0 || j >= arr.length) return;
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    changed(true);
+    var sel = '[data-move="' + kind + '"][data-id="' + id + '"]';
+    var btn = document.querySelector(sel + '[data-dir="' + dir + '"]:not(:disabled)') || document.querySelector(sel + ':not(:disabled)');
+    if (btn) btn.focus();
+  }
+
+  // ---- Add card / Add category: pick from a menu, then Claude fills the cells ----
+  var sampleFn = null, filling = {}, modal = null;
+  var CARD_LIST = ['Chase Sapphire Preferred','Chase Freedom Flex','Chase Ink Business Cash','Amex Gold','Amex Platinum','Amex Green','Amex Blue Cash Preferred','Amex Delta SkyMiles Gold','Capital One Venture','Capital One Savor','Capital One Quicksilver','Citi Double Cash','Citi Strata Premier','Citi Premier','Bank of America Customized Cash Rewards','Bank of America Premium Rewards','Wells Fargo Active Cash','Wells Fargo Autograph','Discover it Miles','U.S. Bank Altitude Go','Amazon Prime Visa','Costco Anywhere Visa by Citi','Target RedCard','Bilt Mastercard','PayPal Cashback Mastercard','Fidelity Rewards Visa'];
+  var CAT_LIST = ['Groceries','Streaming','Drugstores','Transit and rideshare','Home improvement','Entertainment','Utilities','Phone and internet','Hotels','Flights','Amazon','Target','Apple purchases','Fitness clubs','Pets','Gas stations (EV charging)'];
+  function autoTag(r){
+    if (filling[r.id]) return '<span class="autotag">Filling in rates…</span>';
+    if (r.auto === 'done') return '<button class="autotag" type="button" data-clearauto="' + r.id + '" title="Click to dismiss">Auto-filled, please verify</button>';
+    if (r.auto === 'failed') return '<button class="autotag warn" type="button" data-clearauto="' + r.id + '" title="Click to dismiss">Could not auto-fill, edit by hand</button>';
+    return '';
+  }
+  function closeModal(){ if (modal){ modal.remove(); modal = null; } }
+  function openPicker(kind){
+    closeModal();
+    var isCard = kind === 'card', list = isCard ? CARD_LIST : CAT_LIST;
+    var have = (isCard ? data.rows : data.cols).map(function(x){ return x.name.toLowerCase(); });
+    modal = document.createElement('div'); modal.className = 'modal';
+    modal.innerHTML = '<div class="sheet" role="dialog" aria-label="' + (isCard ? 'Add a card' : 'Add a category') + '"><h2>' + (isCard ? 'Add a card' : 'Add a category') + '</h2>' +
+      '<input type="text" id="pk-q" placeholder="' + (isCard ? 'Search or type a card name' : 'Search or type a category') + '" autocomplete="off">' +
+      '<div class="pk-list" id="pk-list"></div>' +
+      '<p class="pk-note">' + (sampleFn ? 'Claude fills in the rates for you from what it knows. It cannot browse, so check them against the issuer’s site.' : 'Auto-fill is not available in this view. The new ' + (isCard ? 'row' : 'column') + ' will be empty.') + '</p></div>';
+    document.body.appendChild(modal);
+    var q = modal.querySelector('#pk-q'), box = modal.querySelector('#pk-list');
+    function draw(){
+      var s = q.value.trim().toLowerCase(), html = '';
+      var items = list.filter(function(n){ return have.indexOf(n.toLowerCase()) < 0 && (!s || n.toLowerCase().indexOf(s) >= 0); });
+      if (s && list.concat(have).every(function(n){ return n.toLowerCase() !== s; })) html += '<button type="button" class="pk-item custom" data-pick="' + esc(q.value.trim()) + '">Add “' + esc(q.value.trim()) + '”</button>';
+      html += items.map(function(n){ return '<button type="button" class="pk-item" data-pick="' + esc(n) + '">' + esc(n) + '</button>'; }).join('');
+      box.innerHTML = html || '<div class="none">Type a name to add it.</div>';
+    }
+    draw();
+    q.addEventListener('input', draw);
+    q.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ var f = box.querySelector('[data-pick]'); if (f) f.click(); } });
+    modal.addEventListener('click', function(e){
+      if (e.target === modal){ closeModal(); return; }
+      var b = e.target.closest('[data-pick]');
+      if (b){ var name = b.getAttribute('data-pick'); closeModal(); if (isCard) addCard(name); else addCat(name); }
+    });
+    setTimeout(function(){ q.focus(); }, 0);
+  }
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+  function fillPrompt(what){
+    return 'You are filling a credit card rewards comparison table for a US cardholder. Today is ' + new Date().toISOString().slice(0, 10) + '. ' + what +
+      ' Use the issuer’s current official rewards rates as best you know them. Each value is a short string like "3%", "2X", "1.5%", "5% (cap $500)", "4x points" or "3% on up to $6,000 per year". Use an empty string when the card earns only its plain base rate of 1% or 1 point per $1, or when the card is not accepted, or when you are not sure. Reply with only the JSON object.';
+  }
+  function failFill(id, e){
+    delete filling[id];
+    var r = data && data.rows.filter(function(x){ return x.id === id; })[0];
+    if (r) r.auto = 'failed';
+    changed(true);
+    if (e && e.code === 'not_granted') setStatus('Auto-fill was not allowed', true);
+  }
+  function addCard(name){
+    var row = { id: uid('r'), name: name };
+    data.rows.push(row);
+    if (!sampleFn){ changed(true); return; }
+    filling[row.id] = true; changed(true);
+    var cols = calcCols().map(function(c){ return { id: c.id, name: c.name }; });
+    var p = fillPrompt('The card is "' + name + '". Categories: ' + JSON.stringify(cols) + '. Return {"cells": {<category id>: <value>, ...}, "cpp": <cents per point as a number if the card earns transferable points or miles, else null>}.');
+    sampleFn.json(p, { modelTier: 'default' }).then(function(res){
+      var r = data.rows.filter(function(x){ return x.id === row.id; })[0];
+      delete filling[row.id];
+      if (!r) return;
+      var cells = res && res.cells || {};
+      cols.forEach(function(c){ var v = cells[c.id]; if (typeof v === 'string' && v.trim() && !data.cells[key(r.id, c.id)]) data.cells[key(r.id, c.id)] = v.trim(); });
+      if (res && typeof res.cpp === 'number' && res.cpp > 0) r.cpp = res.cpp;
+      r.auto = 'done';
+      changed(true);
+    }).catch(function(e){ failFill(row.id, e); });
+  }
+  function addCat(name){
+    var at = data.cols.map(function(c){ return c.calc === false; }).indexOf(true);
+    var col = { id: uid('c'), name: name };
+    if (at < 0) data.cols.push(col); else data.cols.splice(at, 0, col);
+    var rows = vis().map(function(r){ return { id: r.id, name: r.name }; });
+    if (!sampleFn || !rows.length){ changed(true); return; }
+    rows.forEach(function(r){ filling[r.id] = true; });
+    changed(true);
+    var p = fillPrompt('The new category is "' + name + '". Cards: ' + JSON.stringify(rows) + '. Return {<card id>: <value for this category>, ...}.');
+    sampleFn.json(p, { modelTier: 'default' }).then(function(res){
+      rows.forEach(function(r){
+        delete filling[r.id];
+        var v = res && res[r.id];
+        if (typeof v === 'string' && v.trim() && !data.cells[key(r.id, col.id)]) data.cells[key(r.id, col.id)] = v.trim();
+      });
+      changed(true);
+    }).catch(function(e){
+      rows.forEach(function(r){ delete filling[r.id]; });
+      changed(true);
+      setStatus('Could not auto-fill the new category', true);
+    });
+  }
+
+  var popEl = null;
+  function hideInfo(){ if (popEl){ popEl.remove(); popEl = null; } }
+  function showInfo(btn){
+    var id = btn.getAttribute('data-info');
+    if (popEl && popEl.getAttribute('data-for') === id){ hideInfo(); return; }
+    hideInfo();
+    var col = data.cols.filter(function(c){ return c.id === id; })[0];
+    if (!col || !col.info) return;
+    popEl = document.createElement('div');
+    popEl.className = 'pop'; popEl.setAttribute('role', 'dialog'); popEl.setAttribute('data-for', id);
+    var t = document.createElement('b'); t.textContent = col.name + ': what counts';
+    var p = document.createElement('div'); p.textContent = col.info;
+    popEl.appendChild(t); popEl.appendChild(p);
+    document.body.appendChild(popEl);
+    var r = btn.getBoundingClientRect(), w = popEl.offsetWidth;
+    var left = Math.max(12, Math.min(r.left, window.innerWidth - w - 12));
+    popEl.style.left = left + 'px';
+    popEl.style.top = (r.bottom + 6) + 'px';
+  }
+  document.addEventListener('click', function(e){ if (popEl && !e.target.closest('.pop')) hideInfo(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') hideInfo(); });
+  window.addEventListener('scroll', hideInfo, true);
+  var armedTimer = null;
+  wrap.addEventListener('click', function(e){
+    if (!data) return;
+    var tab = e.target.closest('[data-view]');
+    if (tab){ view = tab.getAttribute('data-view'); renderViews(); return; }
+    var ca = e.target.closest('[data-clearauto]');
+    if (ca){ data.rows.forEach(function(r){ if (r.id === ca.getAttribute('data-clearauto')) delete r.auto; }); changed(true); return; }
+    var so = e.target.closest('[data-sort]');
+    if (so){ var sid = so.getAttribute('data-sort'); sortCol = sortCol === sid ? null : sid; renderGrid(); return; }
+    var inf = e.target.closest('[data-info]');
+    if (inf){ e.stopPropagation(); showInfo(inf); return; }
+    var hd = e.target.closest('[data-hide]');
+    if (hd){ data.rows.forEach(function(r){ if (r.id === hd.getAttribute('data-hide')) r.hidden = true; }); changed(true); return; }
+    var sh = e.target.closest('[data-show]');
+    if (sh){ data.rows.forEach(function(r){ if (r.id === sh.getAttribute('data-show')) delete r.hidden; }); changed(true); return; }
+    var mv = e.target.closest('[data-move]');
+    if (mv){ move(mv.getAttribute('data-move'), mv.getAttribute('data-id'), parseInt(mv.getAttribute('data-dir'), 10)); return; }
+    var s = e.target.closest('[data-star]');
+    if (s){
+      var c = s.getAttribute('data-col'), r = s.getAttribute('data-row');
+      if (data.best[c] === r) delete data.best[c]; else data.best[c] = r;
+      changed(true); return;
+    }
+    var b = e.target.closest('[data-rm]');
+    if (b){
+      if (b.getAttribute('data-armed') !== '1'){
+        b.setAttribute('data-armed','1'); b.textContent = 'Remove?';
+        clearTimeout(armedTimer);
+        armedTimer = setTimeout(function(){ if (b.isConnected){ b.removeAttribute('data-armed'); b.textContent = '×'; } }, 3000);
+        return;
+      }
+      var id = b.getAttribute('data-id');
+      if (b.getAttribute('data-rm') === 'row'){
+        data.rows = data.rows.filter(function(r){ return r.id !== id; });
+        Object.keys(data.cells).forEach(function(k){ if (k.indexOf(id + '__') === 0) delete data.cells[k]; });
+        Object.keys(data.best).forEach(function(c){ if (data.best[c] === id) delete data.best[c]; });
+        delete data.notes[id];
+        if (data.quarter && data.quarter.card === id) delete data.quarter.card;
+      } else {
+        data.cols = data.cols.filter(function(c){ return c.id !== id; });
+        Object.keys(data.cells).forEach(function(k){ if (k.slice(-(id.length + 2)) === '__' + id) delete data.cells[k]; });
+        delete data.best[id];
+      }
+      changed(true);
+    }
+  });
+
+  $('add-card').addEventListener('click', function(){ if (data) openPicker('card'); });
+  $('add-cat').addEventListener('click', function(){ if (data) openPicker('cat'); });
+
+  $('dl').addEventListener('click', function(){
+    if (!downloads || !data) return;
+    function q(s){ s = String(s == null ? '' : s); return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s; }
+    var lines = [['Card'].concat(data.cols.map(function(c){ return c.name; })).map(q).join(',')];
+    data.rows.forEach(function(r){
+      lines.push([r.name].concat(data.cols.map(function(c){ return data.cells[key(r.id, c.id)] || ''; })).map(q).join(','));
+    });
+    downloads.save({ filename: 'card-cheat-sheet.csv', data: lines.join('\n') }).then(function(){ setStatus('Downloaded'); }, function(e){
+      if (e && e.code !== 'declined') setStatus('Download is not available here', true);
+    });
+  });
+
+  function onSnap(snap){
+    loaded = true; clearTimeout(slow);
+    if (dirty) return;
+    data = norm(snap.exists ? clone(snap.data()) : null);
+    if (statusEl.textContent === 'Loading…') setStatus('');
+    if (editing()){ pendingRender = true; renderViews(); return; }
+    render();
+  }
+
+  var slow = setTimeout(function(){ if (!loaded) setStatus("Can't reach your saved sheet yet", true); }, 10000);
+  setStatus('Loading…');
+
+  var cl = window.claude;
+  if (!cl || !cl.use){
+    setStatus('Saving is not available here', true);
+    $('grid').innerHTML = '<div class="empty">This view cannot load your saved sheet. Open the page from your Claude artifacts.</div>';
+    return;
+  }
+  Promise.all([cl.use('db'), cl.use('downloads'), cl.use('sample').catch(function(){ return null; })]).then(function(r){
+    var db = r[0]; downloads = r[1]; sampleFn = r[2];
+    if (!db){
+      setStatus('Saving is not available here', true);
+      $('grid').innerHTML = '<div class="empty">This view cannot load your saved sheet. Open the page while signed in to Claude.</div>';
+      return;
+    }
+    ref = db.doc(DOC_PATH);
+    $('add-card').hidden = false; $('add-cat').hidden = false; $('dl').hidden = !downloads;
+    ref.onSnapshot(onSnap, function(e){
+      clearTimeout(slow);
+      setStatus(e && e.code === 'revoked' ? 'Access changed' : "Can't reach your saved sheet", true);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
