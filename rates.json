@@ -1,0 +1,204 @@
+{
+ "updated": "2026-11-05",
+ "note": "Issuer-page rates read Nov 4, 2026. Discover it and other rotating-category cards are not included because the issuers' pages did not list the current quarter.",
+ "cards": {
+  "Chase Sapphire Preferred": {
+   "c_dining": "3x",
+   "c_indian": "3x online grocery only (Walmart, Target and wholesale clubs excluded)",
+   "c_wc": "",
+   "c_gas": "3x",
+   "c_travel": "5x Chase Travel, 2x other travel",
+   "c_online": "",
+   "c_other": "",
+   "cpp": 1
+  },
+  "Chase Freedom Flex": {
+   "c_dining": "3% (5% in Q4 with activation, up to $1,500 a quarter)",
+   "c_indian": "5% in Q4 with activation, up to $1,500 a quarter (Walmart and Target excluded)",
+   "c_wc": "",
+   "c_gas": "",
+   "c_travel": "5% Chase Travel",
+   "c_online": "",
+   "c_other": ""
+  },
+  "Amex Gold": {
+   "c_dining": "4x (up to $50,000 a year)",
+   "c_indian": "4x at U.S. supermarkets (up to $25,000 a year)",
+   "c_wc": "",
+   "c_gas": "",
+   "c_travel": "5x prepaid hotels via Amex Travel, 3x flights",
+   "c_online": "",
+   "c_other": "",
+   "cpp": 1
+  },
+  "Amex Platinum": {
+   "c_dining": "",
+   "c_indian": "",
+   "c_wc": "",
+   "c_gas": "",
+   "c_travel": "5x flights (up to $500,000 a year), 5x prepaid hotels via Amex Travel",
+   "c_online": "",
+   "c_other": "",
+   "cpp": 1
+  },
+  "Amex Green": {
+   "c_dining": "3x",
+   "c_indian": "",
+   "c_wc": "",
+   "c_gas": "",
+   "c_travel": "3x travel and transit",
+   "c_online": "",
+   "c_other": "",
+   "cpp": 1
+  },
+  "Amex Blue Cash Preferred": {
+   "c_dining": "",
+   "c_indian": "6% at U.S. supermarkets (up to $6,000 a year)",
+   "c_wc": "",
+   "c_gas": "3%",
+   "c_travel": "3% transit",
+   "c_online": "",
+   "c_other": ""
+  },
+  "Amex Delta SkyMiles Gold": {
+   "c_dining": "2x",
+   "c_indian": "2x at U.S. supermarkets",
+   "c_wc": "",
+   "c_gas": "",
+   "c_travel": "2x Delta purchases",
+   "c_online": "",
+   "c_other": "",
+   "cpp": 1
+  },
+  "Capital One Venture": {
+   "c_dining": "2X",
+   "c_indian": "2X",
+   "c_wc": "2X",
+   "c_gas": "2X",
+   "c_travel": "5X hotels, rentals and cars via Capital One Travel",
+   "c_online": "2X",
+   "c_other": "2X",
+   "cpp": 1
+  },
+  "Capital One Savor": {
+   "c_dining": "3%",
+   "c_indian": "3% (superstores excluded)",
+   "c_wc": "",
+   "c_gas": "",
+   "c_travel": "5% hotels and rentals via Capital One Travel",
+   "c_online": "",
+   "c_other": ""
+  },
+  "Capital One Quicksilver": {
+   "c_dining": "1.5%",
+   "c_indian": "1.5%",
+   "c_wc": "1.5%",
+   "c_gas": "1.5%",
+   "c_travel": "5% via Capital One Travel",
+   "c_online": "1.5%",
+   "c_other": "1.5%"
+  },
+  "Citi Double Cash": {
+   "c_dining": "2%",
+   "c_indian": "2%",
+   "c_wc": "2%",
+   "c_gas": "2%",
+   "c_travel": "5% hotels, cars and attractions via Citi Travel",
+   "c_online": "2%",
+   "c_other": "2%"
+  },
+  "Citi Strata Premier": {
+   "c_dining": "3x",
+   "c_indian": "3x at supermarkets",
+   "c_wc": "",
+   "c_gas": "3x",
+   "c_travel": "10x hotels, cars and attractions via Citi Travel, 3x air",
+   "c_online": "",
+   "c_other": "",
+   "cpp": 1
+  },
+  "Bank of America Customized Cash Rewards": {
+   "c_dining": "3% if chosen",
+   "c_indian": "2% grocery and wholesale clubs (shared $2,500 a quarter cap)",
+   "c_wc": "2% wholesale clubs if coded that way",
+   "c_gas": "3% if chosen",
+   "c_travel": "3% if chosen",
+   "c_online": "3% if chosen",
+   "c_other": ""
+  },
+  "Bank of America Premium Rewards": {
+   "c_dining": "2x",
+   "c_indian": "1.5x",
+   "c_wc": "1.5x",
+   "c_gas": "1.5x",
+   "c_travel": "2x",
+   "c_online": "1.5x",
+   "c_other": "1.5x",
+   "cpp": 1
+  },
+  "Wells Fargo Active Cash": {
+   "c_dining": "2%",
+   "c_indian": "2%",
+   "c_wc": "2%",
+   "c_gas": "2%",
+   "c_travel": "2%",
+   "c_online": "2%",
+   "c_other": "2%"
+  },
+  "Wells Fargo Autograph": {
+   "c_dining": "3x",
+   "c_indian": "",
+   "c_wc": "",
+   "c_gas": "3x",
+   "c_travel": "3x",
+   "c_online": "",
+   "c_other": "",
+   "cpp": 1
+  },
+  "U.S. Bank Altitude Go": {
+   "c_dining": "4x",
+   "c_indian": "2x at grocery stores",
+   "c_wc": "",
+   "c_gas": "2x",
+   "c_travel": "",
+   "c_online": "",
+   "c_other": ""
+  },
+  "Amazon Prime Visa": {
+   "c_dining": "2%",
+   "c_indian": "5% at Whole Foods only",
+   "c_wc": "",
+   "c_gas": "2%",
+   "c_travel": "5% Chase Travel",
+   "c_online": "5% at Amazon.com",
+   "c_other": ""
+  },
+  "Costco Anywhere Visa by Citi": {
+   "c_dining": "3%",
+   "c_indian": "",
+   "c_wc": "2% at Costco, 1% at Walmart",
+   "c_gas": "5% at Costco gas, 4% elsewhere (up to $7,000 a year combined)",
+   "c_travel": "3% eligible travel",
+   "c_online": "2% at Costco.com",
+   "c_other": ""
+  },
+  "PayPal Cashback Mastercard": {
+   "c_dining": "1.5%",
+   "c_indian": "1.5%",
+   "c_wc": "1.5%",
+   "c_gas": "1.5%",
+   "c_travel": "1.5%",
+   "c_online": "3% with PayPal checkout",
+   "c_other": "1.5%"
+  },
+  "Fidelity Rewards Visa": {
+   "c_dining": "2%",
+   "c_indian": "2%",
+   "c_wc": "2%",
+   "c_gas": "2%",
+   "c_travel": "2%",
+   "c_online": "2%",
+   "c_other": "2%"
+  }
+ }
+}

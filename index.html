@@ -154,6 +154,7 @@ details.fine summary{cursor:pointer;font-weight:500;font-size:14px}
     <div class="tools">
       <label class="spend">Spend $<input id="spend" type="number" min="1" step="1" value="100" inputmode="decimal" aria-label="Spend amount in dollars"></label>
       <span class="status" id="status" role="status"></span>
+      <button class="btn" id="refresh" type="button" title="Update the percentages from the latest rates file">Refresh rates</button>
       <button class="btn" id="add-card" type="button" hidden>Add card</button>
       <button class="btn" id="add-cat" type="button" hidden>Add category</button>
       <button class="btn" id="dl" type="button" hidden>CSV</button>
@@ -230,7 +231,7 @@ details.fine summary{cursor:pointer;font-weight:500;font-size:14px}
       cells: obj(d.cells), best: obj(d.best), notes: obj(d.notes),
       spend: typeof d.spend === 'number' && d.spend > 0 ? d.spend : 100,
       quarter: d.quarter && typeof d.quarter === 'object' ? d.quarter : null,
-      fine: typeof d.fine === 'string' ? d.fine : ''
+      fine: typeof d.fine === 'string' ? d.fine : '', autoVals: obj(d.autoVals)
     };
   }
   function calcCols(){ return data.cols.filter(function(c){ return c.calc !== false; }); }
@@ -563,7 +564,7 @@ details.fine summary{cursor:pointer;font-weight:500;font-size:14px}
   function applyKnown(row){
     var k = KNOWN[row.name];
     if (!k){ row.auto = 'failed'; return false; }
-    calcCols().forEach(function(c){ var v = k[c.id]; if (typeof v === 'string' && v && !data.cells[key(row.id, c.id)]) data.cells[key(row.id, c.id)] = v; });
+    calcCols().forEach(function(c){ var v = k[c.id]; if (typeof v === 'string' && v && !data.cells[key(row.id, c.id)]){ data.cells[key(row.id, c.id)] = v; data.autoVals[key(row.id, c.id)] = v; } });
     if (k.cpp) row.cpp = k.cpp;
     row.auto = 'done';
     return true;
@@ -577,6 +578,49 @@ details.fine summary{cursor:pointer;font-weight:500;font-size:14px}
     });
     return any;
   }
+  // ---- Refresh rates: re-read rates.json (or the built-in table) and update cells you have not edited ----
+  var RATES_ASOF = '2026-11-05';
+  function asOf(s){ var d = new Date(s + 'T12:00:00'); return isNaN(d) ? s : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
+  function applyRates(table, label){
+    var cells = 0, cards = 0, kept = 0, missing = 0;
+    data.rows.forEach(function(r){
+      var k = table[r.name];
+      if (!k){ if (r.auto) missing++; return; }
+      var touched = false;
+      calcCols().forEach(function(c){
+        if (typeof k[c.id] !== 'string') return;
+        var kk = key(r.id, c.id), cur = (data.cells[kk] || '').trim(), prev = data.autoVals[kk];
+        var next = k[c.id];
+        if (cur === next){ if (next) data.autoVals[kk] = next; return; }
+        if (cur === '' || cur === prev){
+          if (next) data.cells[kk] = next; else delete data.cells[kk];
+          if (next) data.autoVals[kk] = next; else delete data.autoVals[kk];
+          cells++; touched = true;
+        } else { kept++; }
+      });
+      if (touched){ cards++; r.auto = 'done'; }
+      if (k.cpp && !r.cpp) r.cpp = k.cpp;
+    });
+    changed(true);
+    var msg = cells ? 'Updated ' + cells + ' cell' + (cells === 1 ? '' : 's') + ' on ' + cards + ' card' + (cards === 1 ? '' : 's') : 'Rates already up to date';
+    msg += ' (' + label + ')' + (kept ? '. Kept ' + kept + ' you edited' : '');
+    setTimeout(function(){ setStatus(msg); }, 900);
+  }
+  function refreshRates(){
+    if (!data) return;
+    var btn = $('refresh'); btn.disabled = true; setStatus('Refreshing…');
+    var done = function(){ btn.disabled = false; };
+    fetch('rates.json?t=' + Date.now(), { cache: 'no-store' }).then(function(res){
+      if (!res.ok) throw new Error('http ' + res.status);
+      return res.json();
+    }).then(function(j){
+      if (!j || !j.cards) throw new Error('bad file');
+      applyRates(j.cards, 'rates as of ' + asOf(j.updated || RATES_ASOF)); done();
+    }).catch(function(){
+      applyRates(KNOWN, 'built-in rates as of ' + asOf(RATES_ASOF) + '; rates.json not reachable'); done();
+    });
+  }
+  $('refresh').addEventListener('click', refreshRates);
   function addCard(name){
     var row = { id: uid('r'), name: name };
     data.rows.push(row);
